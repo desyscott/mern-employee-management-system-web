@@ -13,7 +13,7 @@ export const SideBarItems =[
 {
    title:"Dashboard",
    path:"/",
-   icon:<SpaceDashboardIcon style={{color:"rgb(211, 211, 211)", fontSize:"1.3rem"}}/>
+   icon:<SpaceDashboardIcon style={{color:"rgb(211, 211, 211)", fontSize:"1.3rem"}} />
    
 },
 {

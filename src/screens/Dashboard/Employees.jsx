@@ -1,67 +1,301 @@
-import {useState,Fragment} from 'react'
+import {Fragment,Suspense,useState,lazy} from 'react'
 import Button from "../../components/Button"
-import {Link} from "react-router-dom"
 
 
+import { TopBarLoader } from "../../components/Loaders";
 import { BasicModal } from "../../components/modals";
+import StepComponent from "../../components/steps";
 import { employeesData } from '../../components/EmployeesData/EmployeesData';
 import AddIcon from '@mui/icons-material/Add';
 
-function employees() {
+const PersonalComponent = lazy(() => import("./personal"));
+const EducationalComponent = lazy(() => import("./educational"));
+const ExperienceComponent = lazy(() => import("./experience"));
+const AssetsComponent= lazy(() => import("./Assets"));
+
+
+function Employees() {
   const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
+  const [tab, setTab] = useState("personal");
+
+//personal
+  const [currentAddress, setCurrentAddress] = useState("");
+  const [title, setTitle] = useState("");
+  const [gender, setGender] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [otherNames, setOtherNames] = useState("");
+  const [email, setEmail] = useState("");
+  const [region, setRegion] = useState("");
+  const [city, setCity] = useState("");
+  const [age, setAge] = useState("");
+  const [driverImageUrl, setDriverImageUrl] = useState("");
+  const [driverFile, setDriversFile] = useState();
+  const [telephone, setTelephone] = useState("");
+  const [role, setRole] = useState("");
+
+//education
+  const [tertiaryInstitution, setTertiaryInstitution] = useState("");
+  const [secondaryInstitution, setSecondaryInstitution] = useState("");
+  const [attendedStartDate, setAttendedStartDate] = useState({
+    month:"",
+    year:""
+  });
+  const [attendedEndDate, setAttendedEndDate] = useState({
+    month :"",
+    year:""
+  });
+  const [addMore,setAddMore]=useState(false)
+
+  //Asset
+  const [assignedAsset,setAssignedAsset]= useState("")
+  const [assetAssignedDate,setAssetAssignedDate]=useState()
+  const [assetAssignedName,setAssetAssignedName]=useState("")
+  const [assetAssignedDescription,setAssetAssignedDescription]=useState("")
+  
+  //Work Experience
+  const [companyName,setCompanyName]=useState("")
+  const [jobTitle,setJobTitle]=useState("")
+  const [employmentDateFrom,setEmploymentDateFrom]=useState("")
+  const [employmentDateTo,setEmploymentDateTo]=useState("")
+  const [jobDescription,setJobDescription]=useState("")
+
+ 
+
+
+
+  const handleImageUpload = (e) => {
+    if (e.target.files[0] !== undefined) {
+      setDriverImageUrl(URL.createObjectURL(e.target.files[0]));
+      setDriversFile(e.target.files[0]);
+    }
+  };
+
 
   return (
-    <Fragment>
+    <Fragment style={{ height: "100%" }}>
     {/* <Link to="/" className="text-3xl font-bold ">Dashboard</Link> */}
-    <BasicModal show={showAddEmployeeModal}>
-        <div className="p-10">
-          <h1 className="font-bold text-2xl font-nunito text-green-600">
-            🎉Hurray! We've received your application
-          </h1>
-          <h2 className="text-gray-500 font-nunito pb-5">
-            You've successfully submitted your application. Here's to let you
-            know that we've received it.
-          </h2>
+    <BasicModal  size={76} show={showAddEmployeeModal}>
+    <>
+    <div
+            className={
+              "w-full border-b border-gray-200 flex flex-row justify-between px-5 pt-5 pb-3 items-center"
+            }
+          >
+            <div>
+              <img
+                src=""
+                alt={"logo"}
+                className={"h-10 w-10 rounded-full"}
+              />
+            </div>
 
-          <h1 className="font-bold font-nunito">
-            Here's what you should do next.
-          </h1>
-          <ul>
-            <li>
-              <p className="font-nunito">
-                Visit your Municipal or District Assembly(Taxi and Trotro ) or
-                any of our Service Centres (Private Cab Drivers) for vetting and
-                approval. This is stage is to ensure that you're qualified
-                enough to drive with us.{" "}
-              </p>
-            </li>
+            <div className={"flex  flex-col w-full items-center -ml-10"}>
+              <div className={"relative"}>
+                <div className={"flex items-center"}>
+                  <h1
+                    className={"text-3xl font-bold font-nunito text-green-800"}
+                  >
+                    Add Employee 
+                  </h1>
+                </div>
+              </div>
 
-            <li>
-              <p className="font-nunito">
-                After a successful verification we'll send you an activation
-                code. This help you activate your account.
-              </p>
-            </li>
-            <li>
-              <p className="font-nunito">
-                If you're a vehicle owner. Kindly download the vehicle owner's
-                app to onboard your vehicles.{" "}
-                <b>Vehicles will be inspected before you can assign a driver</b>
-              </p>
-            </li>
-            <li>
-              <p className="font-nunito">
-                Regards! <br></br> Transport For Ghana
-              </p>
-            </li>
-          </ul>
-          <Button
-            title="Continue"
-            onClick={() => {
+              <div>{/* <span className={"text-xs"}>{data?.code}</span> */}</div>
+            </div>
+            <div />
+          </div>
+          <div
+            style={{ height: "77vh" }}
+            className={"p-5 overflow-y-auto scrollContainer"}
+          >
+            <div className=" bg-white ">
+              <div className=" grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-5">
+                <div className="sm:col-span-2 ">
+                  <div className={" top-10 sticky overflow-y-none"}>
+                    <StepComponent tab={tab} />
+                  </div>
+                </div>
+                <Suspense fallback={TopBarLoader()}>
+                  <div className="sm:col-span-3 ml-10 ">
+                    {tab === "personal" && (
+                      <Fragment>
+                        <PersonalComponent
+                          setTab={setTab}
+                          gender={gender}
+                          currentAddress={currentAddress}
+                          setCurrentAddress={setCurrentAddress}
+                          setGender={setGender}
+                          firstName={firstName}
+                          setFirstName={setFirstName}
+                          lastName={lastName}
+                          setLastName={setLastName}
+                          otherNames={otherNames}
+                          setOtherNames={setOtherNames}
+                          role={role}
+                          setRole={setRole}
+                          email={email}
+                          setEmail={setEmail}
+                          title={title}
+                          setTitle={setTitle}
+                          region={region}
+                          setRegion={setRegion}
+                          city={city}
+                          setCity={setCity}
+                          age={age}
+                          setAge={setAge}
+                          telephone={telephone}
+                          setTelephone={setTelephone}
+                          driverImageUrl={driverImageUrl}
+                          handleImageUpload={handleImageUpload}
+                        />
+                      </Fragment>
+                    )}
+                    {tab === "educational" && (
+                      <Fragment>
+                        <EducationalComponent
+                          setTab={setTab}
+                          tertiaryInstitution={tertiaryInstitution}
+                          setTertiaryInstitution={setTertiaryInstitution}
+                          secondaryInstitution={secondaryInstitution}
+                          setSecondaryInstitution={setSecondaryInstitution}
+                          attendedStartDate
+                          // handleChangeAttendedStartDate={handleChangeAttendedStartDate}
+                          setAttendedStartDate={setAttendedStartDate}
+                          attendedEndDate={attendedEndDate}
+                          setAttendedEndDate={setAttendedEndDate}
+                          addMore={addMore}
+                          setAddMore={setAddMore}
+                        
+                        />
+                      </Fragment>
+                    )}
+                    {tab === "asset" && (
+                      <Fragment>
+                        <AssetsComponent
+                         assignedAsset={assignedAsset}
+                         setAssignedAsset={setAssignedAsset}
+                         assetAssignedDate={assetAssignedDate}
+                         setAssetAssignedDate={setAssetAssignedDate}
+                         assetAssignedName={assetAssignedName}
+                         setAssetAssignedName={setAssetAssignedName}
+                         assetAssignedDescription={assetAssignedDescription}
+                         setAssetAssignedDescription={setAssetAssignedDescription}
+                          setTab={setTab}
+                        />
+                      </Fragment>
+                    )}
+                    {tab === "experience" && (
+                      <Fragment>
+                        <ExperienceComponent
+                          setTab={setTab}
+                          companyName={companyName}
+                          setCompanyName={setCompanyName}
+                          jobTitle={jobTitle}
+                          setJobTitle={setJobTitle}
+                          employmentDateFrom={employmentDateFrom}
+                          setEmploymentDateFrom={setEmploymentDateFrom}
+                          employmentDateTo={employmentDateTo}
+                          setEmploymentDateTo={setEmploymentDateTo}
+                          jobDescription={jobDescription}
+                          setJobDescription={setJobDescription}
+                        />
+                      </Fragment>
+                    )}
+                  </div>
+                </Suspense>
+              </div>
+            </div>
+          </div>
+    {/* <form  className="divide-y font-nunito divide-gray-200 lg:col-span-9">
+      <div className="py-6 flex flex-col gap-y-4 px-4 sm:p-6 lg:pb-8">
+       <div className="col-span-12 sm:col-span-6 ">
+          <label htmlFor="username"
+                className="block text-sm font-bold text-gray-700"
+                  >
+                    First Name
+                    <span className="text-red-700 ml-1">*</span>
+                  </label>
+                  <div className="mt-1 rounded-md shadow-sm flex">
+                    <input
+                      type={"text"}
+                      required
+                      placeholder={"Eg. Desmond"}
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      autoComplete="family-name"
+                      className="mt-1 block w-full border-none bg-gray-100 rounded-none shadow-sm py-2 px-3 focus:outline-none focus:ring-white focus:border-white sm:text-sm"
+                    />
+           </div>
+       </div>
+       <div className="col-span-12 sm:col-span-6 ">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-bold text-gray-700"
+                  >
+                    Last Name
+                    <span className="text-red-700 ml-1">*</span>
+                  </label>
+                  <div className="mt-1 rounded-md shadow-sm flex">
+                    <input
+                      type={"text"}
+                      required
+                      placeholder={"Eg. Ntiamoah"}
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      autoComplete="family-name"
+                      className="mt-1 block w-full border-none bg-gray-100 rounded-none shadow-sm py-2 px-3 focus:outline-none focus:ring-white focus:border-white sm:text-sm"
+                    />
+                  </div>
+          </div>
+          <div className="col-span-12 sm:col-span-6 ">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-bold text-gray-700"
+                  >
+                    Other Names
+                  </label>
+                  <div className="mt-1 rounded-md shadow-sm flex">
+                    <input
+                      type={"text"}
+                      value={otherNames}
+                      placeholder={"Eg. Joshua"}
+                      onChange={(e) => setOtherNames(e.target.value)}
+                      autoComplete="family-name"
+                      className="mt-1 block w-full border-none bg-gray-100 rounded-none shadow-sm py-2 px-3 focus:outline-none focus:ring-white focus:border-white sm:text-sm"
+                    />
+                  </div>
+           </div>
+          <div className="col-span-12 sm:col-span-6">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-bold text-gray-700"
+                  >
+                    Email
+                    <span className="text-red-700 ml-1">*</span>
+                  </label>
+                  <div className="mt-1 rounded-md shadow-sm flex">
+                    <input
+                      type={"text"}
+                      value={email}
+                      placeholder={"Eg. mrfallback123@gmail.com"}
+                      onChange={(e) => setEmail(e.target.value)}
+                      autoComplete="family-name"
+                      className="mt-1 block w-full border-none bg-gray-100 rounded-none shadow-sm py-2 px-3 focus:outline-none focus:ring-white focus:border-white sm:text-sm"
+                    />
+                  </div>
+           </div>
+      </div>
+    </form>    */}
+        <div className="grid grid-cols-1 border-t cursor-pointer p-1 bg-gray-50">
+            <Button
+                onClick={() => {
               setShowAddEmployeeModal(false);
             }}
-          ></Button>
-        </div>
+              title="Close"
+            />
+          </div>
+        </>
       </BasicModal>
 
       <div className="mb-1">
@@ -211,4 +445,4 @@ function employees() {
   )
 }
 
-export default employees
+export default Employees

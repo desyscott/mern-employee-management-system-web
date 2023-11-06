@@ -1,5 +1,5 @@
 import  {Fragment,useState} from 'react'
-import {Link} from "react-router-dom"
+
 
 
 
@@ -9,7 +9,7 @@ export default  function Dashboard() {
 
   return (
     <Fragment>
-       <Link to="/employees" className="text-3xl font-bold ">Employees</Link>
+       <h3>Dashboard</h3>
        
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

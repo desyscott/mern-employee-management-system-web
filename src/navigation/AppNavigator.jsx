@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-// import { TopBarLoader } from "../components/Loader";
+import { TopBarLoader } from "../components/Loaders";
 
 const Dashboard = lazy(() => import("../screens/Dashboard/index"));
 const Employees = lazy(() => import("../screens/Dashboard/Employees"));
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
 
 function RootNavigator() {
   return (
-    <Suspense>
+    <Suspense fallback={TopBarLoader()}>
     <RouterProvider router={router} />
     </Suspense>
   );

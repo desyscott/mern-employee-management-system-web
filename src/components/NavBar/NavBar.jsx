@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-// import logo from "../../assets/react.svg";
+import logo from "../../assets/logo.png";
 
 import Transitions from "../../utils/Transition";
 // import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
@@ -14,6 +14,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function AppHeader() {
   const [showMenu, setShowMenu] = useState(false);
+  // const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [open, setOpen] = useState(false);
 
 
@@ -169,7 +170,7 @@ export default function AppHeader() {
         <div className="max-w-7xl mx-auto px-2 pb-1 sm:px-4 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex px-2 lg:px-0">
-              <div className="flex-shrink-0 flex items-center">
+              {/* <div className="flex-shrink-0 flex items-center">
                 <img
                   className="block lg:hidden h-8 w-auto"
                   src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
@@ -180,7 +181,7 @@ export default function AppHeader() {
                   src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
                   alt="Workflow"
                 />
-              </div>
+              </div> */}
               <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
                 <a 
                  href="/"
@@ -304,7 +305,7 @@ export default function AppHeader() {
                 </svg>
               </button>
 
-              <div className="ml-4 relative flex-shrink-0">
+              <div className="ml-4 relative flex-shrink-0" onClick={() => setOpen(!open)}>
                 <div>
                   <button
                     type="button"
@@ -324,19 +325,92 @@ export default function AppHeader() {
                     
                 </div>
               </div>
-              <div
-                    className={`ml-2 text-gray-400 rounded-full cursor-pointer hover:text-gray-500 
+              
+              <div className={`ml-2 mt-2 text-gray-400 rounded-full cursor-pointer hover:text-gray-500 `}
+              onClick={() => setOpen(!open)} >
+                   <span>Admin</span>
+                    <KeyboardArrowDownIcon onClick={() => setOpen(!open)}  className={`
                       ${open
-                        ? "rotate-180 toggle-btn mt-2 text-black-600"
-                        : "toggle-btn cursor-pointer mt-2 text-black-600"}
+                        ? "rotate-180 toggle-btn  text-black-600"
+                        : "toggle-btn cursor-pointer  text-black-600"}
                        
-                        `}
-                  >
-                    <KeyboardArrowDownIcon onClick={() => setOpen(!open)} />
+                        `}/>
                   </div>
             </div>
           </div>
         </div>
+
+         {/**PROFILE MENU */}
+         <Transitions
+            show={open}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <div
+              className="origin-top-right absolute right-0 mt-2 w-60 z-50 hidden lg:block h-44 rounded-md shadow-lg py-3 bg-gray-200 text-black ring-1 ring-black ring-opacity-5 focus:outline-none"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="user-menu-button"
+              tabIndex="-1"
+            >
+              <Link to="/how-it-works" onClick={() => setShowMenu(!showMenu)}>
+                <span
+                  href="#"
+                  className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-50"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-0"
+                  onClick={()=>{
+                    window.scrollTo({top:(0, 0), behavior: 'smooth'});
+                  }}
+                >
+                   Your Profile
+                </span>
+              </Link>
+              <Link to="/merchants" onClick={() => setShowMenu(!showMenu)}>
+                <span
+                  className="block px-4 py-3 text-sm text-green-600 hover:bg-gray-50"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-0"
+                  onClick={()=>{
+                    window.scrollTo({top:(0, 0), behavior: 'smooth'});
+                  }}
+                >
+                  Settings
+                </span>
+              </Link>
+              <a
+                href="https://bustickets.tapngogh.com/"
+                className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-50"
+                role="menuitem"
+                tabIndex="-1"
+                id="user-menu-item-0"
+              >
+                Book Bus Ticket
+              </a>
+
+              <Link to="/faqs" onClick={() => setShowMenu(!showMenu)}>
+                <span
+                  href="#"
+                  className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-50"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-1"
+                  onClick={()=>{
+                    window.scrollTo({top:(0, 0), behavior: 'smooth'});
+                  }}
+                >
+                  Sign out
+                </span>
+              </Link>
+          
+            </div>
+          </Transitions>
 
       
           {/**MOBILE MENU */}
